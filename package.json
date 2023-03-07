@@ -1,0 +1,30 @@
+{
+  "name": "electron-shared-context",
+  "version": "1.0.0",
+  "main": "dist/app/main.js",
+  "repository": "https://github.com/wxydev1/electron-shared-context.git",
+  "author": "wxydev1",
+  "license": "MIT",
+  "scripts": {
+    "watch:renderer": "webpack --config webpack.config.renderer.js --watch --progress --mode development --devtool inline-source-map",
+    "watch:app": "webpack --config webpack.config.app.js --progress --watch --mode development --devtool inline-source-map",
+    "watch": "set NODE_OPTIONS=--max_old_space_size=8192 && run-p watch:renderer watch:app",
+    "app": "electron ."
+  },
+  "dependencies": {
+    "electron": "^13",
+    "mobx": "^6.8.0",
+    "mobx-react-lite": "^3.4.2",
+    "react": "^17",
+    "react-dom": "^17"
+  },
+  "devDependencies": {
+    "@types/react": "^17",
+    "@types/react-dom": "^17",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
+}

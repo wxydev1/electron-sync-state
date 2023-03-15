@@ -1,20 +1,18 @@
-import { MainWindow } from "./main";
+import { observer } from "mobx-react-lite";
+import ReactDOM from "react-dom";
+import { useLocalStorage } from "./use-local-storage";
 
-const childWindow = {
-  render() {
-    // get from mainWindow
-    const { observer, store, ReactDOM } = window.opener as MainWindow;
+const Child = observer(() => {
+  const [store, setStore] = useLocalStorage('store', null);
 
-    const Child = observer(() => {
-      return (
-        <div>
-          <h1>I am Child Window</h1>
-          <div>store.count = {store.count}</div>
-        </div>
-      );
-    });
+  return (
+    <div>
+      <h1 onClick={() => {
+        store.count ++
+      }}>I am Child Window</h1>
+      <div>store.count = {store.count}</div>
+    </div>
+  );
+});
 
-    ReactDOM.render(<Child />, document.getElementById("root"));
-  },
-};
-(window as any).childWindow = childWindow;
+ReactDOM.render(<Child />, document.getElementById("root"));

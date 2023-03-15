@@ -10,10 +10,13 @@ module.exports = {
   output: {
     path: path.join(__dirname, "dist/renderer"),
   },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".css", ".json"],
+  },
   module: {
     rules: [
       {
-        test: [/\.tsx$/, /\.ts$/],
+        test: [/\.tsx$/, /\.ts$/, /\.js$/],
         loader: "ts-loader",
         exclude: [/node_modules/],
         options: {
@@ -25,12 +28,12 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: `main.html`,
-      chunks: ['main'],
+      chunks: ["main"],
       template: path.resolve(__dirname, "public/index.html"),
     }),
     new HtmlWebpackPlugin({
       filename: `child.html`,
-      chunks: ['child'],
+      chunks: ["child"],
       template: path.resolve(__dirname, "public/index.html"),
     }),
   ],

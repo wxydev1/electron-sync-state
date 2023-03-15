@@ -1,39 +1,8 @@
 import { makeAutoObservable } from "mobx";
 import { observer } from "mobx-react-lite";
 import ReactDOM from "react-dom";
+import { useLocalStorage } from "./use-local-storage";
 
-const App = observer(() => {
-  return (
-    <div>
-      <h1>I am Main Window</h1>
-      <button
-        onClick={() => {
-          const win = window.open("child.html");
-          win.addEventListener("load", () => {
-            (win as any).childWindow.render();
-          });
-        }}
-      >
-        Open Child Window
-      </button>
-      <div>store.count = {store.count}</div>
-      <button
-        onClick={() => {
-          store.setCount(store.count - 1);
-        }}
-      >
-        minus-
-      </button>
-      <button
-        onClick={() => {
-          store.setCount(store.count + 1);
-        }}
-      >
-        plus+
-      </button>
-    </div>
-  );
-});
 class Store {
   count: number = 0;
   constructor() {
@@ -43,7 +12,39 @@ class Store {
     this.count = count;
   }
 }
-const store = new Store();
+const countStore = new Store();
+
+const App = observer(() => {
+  const [store, setStore] = useLocalStorage("store", countStore);
+  return (
+    <div>
+      <h1>I am Main Window</h1>
+      <button
+        onClick={() => {
+          const win = window.open("child.html");
+        }}
+      >
+        Open Child Window
+      </button>
+      <div>store.count = {store.count}</div>
+      <button
+        onClick={() => {
+          store.count--;
+        }}
+      >
+        minus-
+      </button>
+      <button
+        onClick={() => {
+          store.count++;
+        }}
+      >
+        plus+
+      </button>
+    </div>
+  );
+});
+
 ReactDOM.render(<App />, document.getElementById("root"));
 // assign to window
 // mainWindow is the parent window
@@ -52,8 +53,3 @@ export interface MainWindow extends Window {
   store: Store;
   ReactDOM: typeof ReactDOM;
 }
-
-const mainWindow = window as any as MainWindow;
-mainWindow.ReactDOM = ReactDOM;
-mainWindow.store = store;
-mainWindow.observer = observer;
